@@ -126,8 +126,10 @@ function wipeData(){
 }
 
 ethereum.on("accountsChanged", (accounts)=>{
+    console.log(accounts);
     if (accounts.length>0){
         getCoinbase().then(account=>{
+            console.log(account);
             if (account==null){
                 wipeData()
             }else{
@@ -137,7 +139,6 @@ ethereum.on("accountsChanged", (accounts)=>{
     }else{
         wipeData()
     }
-
 })
 
 function getChainId(){
