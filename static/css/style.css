@@ -3866,3 +3866,231 @@ body {
     color: #fff;
     margin-left: auto;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.timeline {
+    position: relative;
+    width: fit-content;
+}
+
+.timeline > ul {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: fit-content;
+}
+
+.timeline > ul > li {
+    margin: 10px 40px;
+    padding: 10px;
+    background-color: #444549;
+    border-radius: 50%;
+    position: relative;
+    text-align: center;
+    flex: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px !important;
+    height: 25px !important;
+    color: #AEAEAE;
+    z-index: 2;
+}
+
+.timeline > ul > li:nth-child(2) {
+    background-color: #C0343C;
+    color: white;
+}
+
+.timeline > ul > li:nth-child(2) > span {
+    color: #C0343C;
+}
+
+.timeline > ul > li:nth-child(1) {
+    margin-left: 20px;
+}
+
+.timeline > ul > li:nth-child(5) {
+    margin-right: 20px;
+}
+
+.timeline > ul > li > span {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+}
+
+.timeline > ul > hr {
+    flex: 1;
+    position: absolute;
+    width: 90%;
+    height: 3px;
+    border: none;
+    border-top: 3px solid #444549;
+    z-index: 0;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.form-template {
+    padding: 25px 15px;
+    border: 1px solid #2F2F2F;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.form-template > h1 {
+    text-transform: uppercase;
+    font-weight: normal;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.form1 {
+    margin-top: 55px;
+}
+
+.form1 > input {
+    background-color: transparent;
+    border: 1px solid #C0343C;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-top: 20px;
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
+
+.form1 > input::placeholder {
+    color: #757575;
+    text-align: center;
+}
+
+.form1 > div {
+    margin-top: 20px;
+}
+.form1 > div > button {
+    border-radius: 31px;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.form1 > p {
+    color: #6E757C;
+    margin-top: 10px;
+    font-weight: normal;
+}
+
+#buy_button {
+    background-color: #C0343C;
+    color: white;
+}
+#claim_button {
+    background-color: #77222C;
+    color: #A4A4AA;
+}
+
+.form2 {
+    margin-top: 20px;
+}
+
+.swap-amount {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.swap-amount > span:nth-child(2) {
+    color: #AEAEAE;
+}
+
+.swap-count {
+    color: #C0343C;
+    font-size: 24px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+.swap-prgs {
+    margin-top: 20px;
+}
+
+.swap-bar {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.swap-bar > p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.swap-bar > p > span:nth-child(1) {
+    color: #AEAEAE;
+}
+
+.swap-bar > p > span > span:nth-child(1) {
+    color: #C0343C;
+    font-size: 20px;
+}
+.swap-bar > p > span > span:nth-child(2) {
+    color: #AEAEAE;
+}
+
+.swap-bar > div {
+    width: 100%;
+    height: 8px;
+    position: relative;
+    margin-top: 10px;
+}
+.swap-bar > div > div {
+    position: absolute;
+}
+.swap-bar > div > div:nth-child(1) {
+    width: 100%;
+    height: 100%;
+    background-color: #45464A;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.swap-bar > div > div:nth-child(2) {
+    width: 64%;
+    height: 100%;
+    background-color: #C0343C;
+    border-radius: 4px;
+    z-index: 3;
+}
+
+@media screen and (max-width: 960px) {
+    .timeline > ul > li {
+        margin: 10px 20px;
+    }
+    .timeline > ul > hr {
+        width: 85%;
+    }
+    .timeline > ul > li > span {
+        font-size: 12px;
+    }
+}
