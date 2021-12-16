@@ -1,4 +1,4 @@
-let web3Provider = "https://bsc-dataseed1.binance.org:443"
+let web3Provider = "https://data-seed-prebsc-1-s1.binance.org:8545"
 let user = null
 let connectWalletBtn = document.querySelector("#connectWalletBtn")
 let connectedWalletBtn = document.querySelector("#walletConnected")
@@ -6,14 +6,12 @@ let etBalance = document.querySelector("#etBalance")
 let etCoinbase = document.querySelector("#etCoinbase")
 let transactionAvaileble = false
 let contracts = {}
+let timeExpired = false
 
-fetch('https://www.timeapi.io/api/Time/current/zone?timeZone=Europe/Moscow').then(data=>{
-    console.log(data);
-})
 initWeb3()
 onRenderCheck()
 
-connectWalletBtn.onclick = ()=>{
+connectWalletBtn.onclick = () => {
     login()
 }
 
@@ -24,14 +22,14 @@ class User {
     }
 }
 
-function onRenderCheck(){
-    getCoinbase().then(coinbase=>{
-        if (coinbase){
+function onRenderCheck() {
+    getCoinbase().then(coinbase => {
+        if (coinbase) {
             createUser()
-            getChainId().then(chainId=>{
-                if(chainId!=web3.utils.toHex(97)){
+            getChainId().then(chainId => {
+                if (chainId != web3.utils.toHex(97)) {
                     transactionAvaileble = false
-                }else{
+                } else {
                     transactionAvaileble = true
 
                 }
@@ -41,7 +39,7 @@ function onRenderCheck(){
 }
 
 
-function initWeb3 () {
+function initWeb3() {
     if (typeof (web3) != "undefined") {
         web3Provider = web3.currentProvider
         web3 = new Web3(web3.currentProvider);
@@ -52,13 +50,13 @@ function initWeb3 () {
     web3.eth.defaultAccount
 }
 
-function initializeContract(name,schema,hash){
-    let contract =new web3.eth.Contract(schema,hash);
-    contracts[name]=contract
+function initializeContract(name, schema, hash) {
+    let contract = new web3.eth.Contract(schema, hash);
+    contracts[name] = contract
 }
 
-function switchToBinance(){
-    if (window.ethereum){
+function switchToBinance() {
+    if (window.ethereum) {
         ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
@@ -74,7 +72,7 @@ function switchToBinance(){
                     }
                 },
             ],
-        }).then(()=>{
+        }).then(() => {
             ethereum.request({
                 method: 'wallet_switchEthereumChain',
                 params: [
@@ -82,7 +80,7 @@ function switchToBinance(){
                         chainId: web3.utils.toHex(97),
                     },
                 ],
-            }).then(res=>{
+            }).then(res => {
                 transactionAvaileble = true
             })
         })
@@ -90,7 +88,7 @@ function switchToBinance(){
 }
 
 
-function getCoinbase(){
+function getCoinbase() {
     return web3.eth.getCoinbase(function (err, account) {
         if (err === null) {
             return account
@@ -98,70 +96,88 @@ function getCoinbase(){
     });
 }
 
-function getBalance(hash){
-       return  web3.eth.getBalance(hash,"",(err, balance)=>{
-            if (err === null) {
-                return balance
-            }
-        });
+function getBalance(hash) {
+    return ethereum.request({
+        method:"eth_getBalance",
+        params:[hash,"latest"]
+    }).then(bal=>{
+       return web3.utils.hexToNumberString(bal)/Math.pow(10,18);
+    })
 }
 
-function createUser(){
-    getCoinbase().then(account=>{
+function createUser() {
+    getCoinbase().then(account => {
         user = new User(account)
-        getBalance(user.coinbase).then(balance=>{
+        getBalance(user.coinbase).then(balance => {
             user.balance = balance
             connectWalletBtn.style.display = "none"
             connectedWalletBtn.style.display = "flex"
-            etBalance = user.balance
-            etCoinbase = user.coinbase
+            etBalance.innerHTML = user.balance + " BNB"
+            etCoinbase.innerHTML = user.coinbase
+            makeTransaction("0.1")
         })
     })
 }
 
-function wipeData(){
-    user=null
+function wipeData() {
+    user = null
     connectWalletBtn.style.display = "block"
     connectedWalletBtn.style.display = "none"
 }
 
-ethereum.on("accountsChanged", (accounts)=>{
-    console.log(accounts);
-    if (accounts.length>0){
-        getCoinbase().then(account=>{
-            console.log(account);
-            if (account==null){
+ethereum.on("accountsChanged", (accounts) => {
+    if (accounts.length > 0) {
+        getCoinbase().then(account => {
+            if (account == null) {
                 wipeData()
-            }else{
+            } else {
                 createUser()
             }
         })
-    }else{
+    } else {
         wipeData()
     }
 })
 
-function getChainId(){
+function getChainId() {
     return ethereum.request({"method": "eth_chainId",})
 }
 
 ethereum.on('chainChanged', (chainId) => {
-    if(chainId!=web3.utils.toHex(97)){
+    if (chainId != web3.utils.toHex(97)) {
         transactionAvaileble = false
     }
 });
 
-function login(){
+function login() {
     switchToBinance()
-    if(!user){
-        ethereum.request({method:"eth_requestAccounts"}).then(
+    if (!user) {
+        ethereum.request({method: "eth_requestAccounts"}).then(
             createUser()
         )
     }
 }
 
 
+function makeTransaction(value){
+    if (user){
+        if (timeExpired){
+        }else{
+            let WeiValue = web3.utils.toWei(value,"ether")
+            ethereum.request({
+                method:"eth_sendTransaction",
+                params:[
+                    {
+                        from:user.coinbase,
+                        to:"0xB6a6f75f44D7Af896e968B29245D66CB389e2cce",
+                        value: web3.utils.toHex(WeiValue)
+                    }
+                ]
+            })
+        }
+    }
 
+}
 
 
 
