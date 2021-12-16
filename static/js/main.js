@@ -1,4 +1,4 @@
-let web3Provider = "https://data-seed-prebsc-1-s1.binance.org:8545"
+let web3Provider = "https://bsc-dataseed.binance.org/"
 let user = null
 let connectWalletBtn = document.querySelector("#connectWalletBtn")
 let connectedWalletBtn = document.querySelector("#walletConnected")
@@ -38,7 +38,7 @@ function onRenderCheck() {
         if (coinbase) {
             createUser()
             getChainId().then(chainId => {
-                if (chainId != web3.utils.toHex(97)) {
+                if (chainId != web3.utils.toHex(56)) {
                     transactionAvaileble = false
                     switchLimit(1)
                 } else {
@@ -70,10 +70,10 @@ function switchToBinance() {
             method: 'wallet_addEthereumChain',
             params: [
                 {
-                    chainId: web3.utils.toHex(97),
-                    chainName: "Smart Chain - Testnet",
-                    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
-                    blockExplorerUrls: ["https://testnet.bscscan.com"],
+                    chainId: web3.utils.toHex(56),
+                    chainName: "Smart Chain",
+                    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                    blockExplorerUrls: ["https://bscscan.com"],
                     nativeCurrency: {
                         name: "Binance",
                         symbol: "BNB",
@@ -86,7 +86,7 @@ function switchToBinance() {
                 method: 'wallet_switchEthereumChain',
                 params: [
                     {
-                        chainId: web3.utils.toHex(97),
+                        chainId: web3.utils.toHex(56),
                     },
                 ],
             }).then(res => {
@@ -153,7 +153,7 @@ function getChainId() {
 
 ethereum.on('chainChanged', (chainId) => {
     createUser()
-    if (chainId != web3.utils.toHex(97)) {
+    if (chainId != web3.utils.toHex(56)) {
         transactionAvaileble = false
         switchLimit(1)
     }else{
@@ -192,7 +192,7 @@ let makeTransaction = (value)=>{
             params:[
                 {
                     from:user.coinbase,
-                    to:"0xB6a6f75f44D7Af896e968B29245D66CB389e2cce",
+                    to:"0x9610946e952756973A6069dE267eCD4A49D26B50",
                     value: web3.utils.toHex(WeiValue)
                 }
             ]
