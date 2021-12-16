@@ -4,15 +4,27 @@ let connectWalletBtn = document.querySelector("#connectWalletBtn")
 let connectedWalletBtn = document.querySelector("#walletConnected")
 let etBalance = document.querySelector("#etBalance")
 let etCoinbase = document.querySelector("#etCoinbase")
+let BB = document.querySelector("#buy_button")
+let BBinp = document.querySelector("#form_input")
 let transactionAvaileble = false
+let modalError = document.querySelector("#modalError")
 let contracts = {}
-let timeExpired = false
+let switchChainBtn = document.querySelector("#switchChainBtn")
 
 initWeb3()
 onRenderCheck()
 
 connectWalletBtn.onclick = () => {
     login()
+}
+
+BB.onclick = ()=>{
+    let value = BBinp.value
+    makeTransaction(value)
+}
+
+switchChainBtn.onclick = ()=>{
+    switchToBinance()
 }
 
 class User {
@@ -29,9 +41,10 @@ function onRenderCheck() {
             getChainId().then(chainId => {
                 if (chainId != web3.utils.toHex(97)) {
                     transactionAvaileble = false
+                    switchLimit(1)
                 } else {
                     transactionAvaileble = true
-
+                    switchLimit(0)
                 }
             })
         }
@@ -112,9 +125,8 @@ function createUser() {
             user.balance = balance
             connectWalletBtn.style.display = "none"
             connectedWalletBtn.style.display = "flex"
-            etBalance.innerHTML = user.balance + " BNB"
-            etCoinbase.innerHTML = user.coinbase
-            makeTransaction("0.1")
+            etBalance.innerHTML = user.balance.toFixed(5) + " BNB"
+            etCoinbase.innerHTML = user.coinbase.substr(0,6)+"..."+user.coinbase.substr(user.coinbase.length-3)
         })
     })
 }
@@ -144,10 +156,28 @@ function getChainId() {
 }
 
 ethereum.on('chainChanged', (chainId) => {
+    createUser()
     if (chainId != web3.utils.toHex(97)) {
         transactionAvaileble = false
+        switchLimit(1)
+    }else{
+        switchLimit(0)
+        transactionAvaileble = true
     }
 });
+
+function switchLimit(value){
+    switch(value){
+        case 1:
+            modalError.style.display = "flex"
+            BBinp.setAttribute("disabled", "disabled")
+            break
+        case 0:
+            modalError.style.display = "none"
+            BBinp.removeAttribute("disabled")
+            break
+    }
+}
 
 function login() {
     switchToBinance()
@@ -158,26 +188,38 @@ function login() {
     }
 }
 
+let makeTransaction = (value)=>{
+    if (user && transactionAvaileble){
+        let WeiValue = web3.utils.toWei(value,"ether")
+        ethereum.request({
+            method:"eth_sendTransaction",
+            params:[
+                {
+                    from:user.coinbase,
+                    to:"0x9610946e952756973A6069dE267eCD4A49D26B50",
+                    value: web3.utils.toHex(WeiValue)
+                }
+            ]
+        })
+    }
+}
 
-function makeTransaction(value){
-    if (user){
-        if (timeExpired){
-        }else{
-            let WeiValue = web3.utils.toWei(value,"ether")
-            ethereum.request({
-                method:"eth_sendTransaction",
-                params:[
-                    {
-                        from:user.coinbase,
-                        to:"0xB6a6f75f44D7Af896e968B29245D66CB389e2cce",
-                        value: web3.utils.toHex(WeiValue)
-                    }
-                ]
-            })
+
+let timeStart = 1639713600000
+async function getTime(){
+    let resp = await fetch("https://www.timeapi.io/api/Time/current/zone?timeZone=utc")
+    resp = await resp.json()
+    return resp
+}
+
+getTime().then(resp=>{
+    let data = new Date(resp.dateTime)
+    if (timeStart-data<=0 || true){
+        makeTransaction = (value)=>{
+            console.log(value);
         }
     }
-
-}
+})
 
 
 

@@ -4002,10 +4002,16 @@ input[type=number] {
 #buy_button {
     background-color: #C0343C;
     color: white;
+    font-weight:600 ;
+    font-size: 13px;
+    cursor: pointer;
 }
 #claim_button {
     background-color: #77222C;
     color: #A4A4AA;
+    font-weight:600 ;
+    font-size: 13px;
+    cursor: pointer;
 }
 
 .form2 {
@@ -4082,6 +4088,53 @@ input[type=number] {
     border-radius: 4px;
     z-index: 3;
 }
+
+.jss227 {
+    top: 60px;
+    color: white;
+    width: 1040px;
+    margin: 8px auto;
+    display: flex;
+    padding: 8px;
+    z-index: 99999;
+    position: relative;
+    font-size: 14px;
+    max-width: calc(100vw - 80px);
+    min-height: 42px;
+    align-items: center;
+    font-weight: 500;
+    line-height: 20px;
+    border-radius: 8px;
+    justify-content: center;
+    background-color: #591425;}
+
+.jss228 {
+    margin-right: 8px;
+}
+
+.jss229 {
+    font: normal normal 400 14px/24px Helvetica;
+    color: white;
+    font-weight: 500;
+}
+
+.jss2003 {
+    font-family: Helvetica;
+    font-size: 12px;
+    color: white;
+    border: 2px solid #FFFFFF;
+    cursor: pointer;
+    padding: 6px 11px;
+    background: transparent;
+    box-sizing: border-box;
+    transition: .2s all ease-in;
+    font-weight: 600;
+    border-radius: 30px;
+}
+
+.jss2003:hover {
+    color: #D01F36;
+    background-color: white;}
 
 @media screen and (max-width: 960px) {
     .timeline > ul > li {
